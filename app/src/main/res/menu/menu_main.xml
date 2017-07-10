@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.jikexueyuan.cicada_chat/MainActivity">
+    <item android:id="@+id/refresh"
+          android:title="刷新"
+          android:icon="@drawable/ic_action_name"
+          android:orderInCategory="100"
+          app:showAsAction="always"/>
+    <item android:id="@+id/addFriend"
+          android:title="@string/add_friend"
+          android:orderInCategory="100"
+          android:icon="@drawable/ic_action_name"
+          app:showAsAction="ifRoom"/>
+    <item android:title="会话列表"
+          android:id="@+id/conversationList"
+          app:showAsAction="ifRoom"
+          android:orderInCategory="100"/>
+
+
+</menu>
