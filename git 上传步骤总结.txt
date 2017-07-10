@@ -1,0 +1,12 @@
+git add . // add all documents to暂存库
+git remote add origin https://github.com/me/repo.git
+git commit -m "first commit"
+git push origin master
+
+
+
+有一次出现  git everything up-to-date
+solution:
+1. git remote rm origin
+2. git gc
+然后 重新 add .
