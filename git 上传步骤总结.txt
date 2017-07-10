@@ -9,4 +9,4 @@
 solution:
 1. git remote rm origin
 2. git gc
-然后 重新 重复 上述操作步骤
+然后重新重复上述操作步骤
