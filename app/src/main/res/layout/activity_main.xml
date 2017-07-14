@@ -16,17 +16,21 @@
         android:layout_height="300dp"
         android:id="@+id/lv_friendlist"/>
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:inputType="textPersonName"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/iat_Text"
+        android:textSize="20sp"/>
+
     <Button
-        android:text="@string/refresh"
+        android:text="@string/start_speech"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_refresh"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="112dp"
-        android:layout_marginStart="112dp"
-        android:layout_marginBottom="88dp"/>
-
+        android:layout_above="@+id/iat_Text"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
