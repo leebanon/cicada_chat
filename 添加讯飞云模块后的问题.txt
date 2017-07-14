@@ -1,0 +1,25 @@
+onDestroy() in MainAcitivity:
+
+@Override
+
+protected void onDestroy() {
+
+  super.onDestroy();
+
+  // 退出时释放连接
+
+  mIat.cancel();
+
+  mIat.destroy();
+
+}
+
+
+
+java.lang.NullPointerException: Attempt to invoke virtual method 'void com.iflytek.cloud.SpeechRecognizer.cancel()' 
+
+on a null object reference
+
+
+
+cancel() Method could not be invoked, I //note them for the time being.
