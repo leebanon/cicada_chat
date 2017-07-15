@@ -19,7 +19,6 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:inputType="textPersonName"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/iat_Text"
@@ -29,7 +28,7 @@
         android:text="@string/start_speech"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_refresh"
+        android:id="@+id/btn_speech"
         android:layout_above="@+id/iat_Text"
         android:layout_centerHorizontal="true"/>
 

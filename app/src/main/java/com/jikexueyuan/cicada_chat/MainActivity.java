@@ -119,13 +119,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 RongIM.getInstance().startPrivateChat(MainActivity.this, target, null);
             }
         });
-        Button btn_refresh = (Button) findViewById(R.id.btn_refresh);
-        btn_refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refreshFriendList();
-            }
-        });
+//        Button btn_speech = (Button) findViewById(R.id.btn_speech);
+        findViewById(R.id.btn_speech).setOnClickListener(MainActivity.this);
 
     }
 
@@ -136,7 +131,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         switch (view.getId()) {
             // 开始听写
             // 如何判断一次听写结束：OnResult isLast=true 或者 onError
-            case R.id.btn_refresh:
+            case R.id.btn_speech:
                 // 移动数据分析，收集开始听写事件
                 FlowerCollector.onEvent(MainActivity.this, "iat_recognize");
 
@@ -201,6 +196,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             if (isLast) {
                 // TODO 最后的结果
+                printResult(results);
             }
         }
 
@@ -330,9 +326,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
 
-        // 退出时释放连接
-        mIat.cancel();
-        mIat.destroy();
+//        // 退出时释放连接
+//        mIat.cancel();
+//        mIat.destroy();
     }
 
     @Override
