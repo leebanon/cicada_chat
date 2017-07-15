@@ -1,7 +1,7 @@
 ﻿1. git add . // add all documents to暂存库
 2. git remote add origin https://github.com/me/repo.git
 3. git commit -m "first commit"
-4. git push origin master
+4. git push origin master, push之前先pull一下
 
 
 

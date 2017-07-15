@@ -1,0 +1,27 @@
+首先在App中设置ID：
+	SpeechUtility.createUtility(context, SpeechConstant.APPID+"=12345678");
+然后完成以下三个步骤（语音识别，语法文件识别，语音合成等都遵从这三个步骤）：
+1.初始化：
+	SpeechRecognizer mIat = SpeechRecognizer.createRecognizer(context, mInitListener);
+  其中mInitListener是初始化时需要传入的监听对象
+2.设置参数：
+	mIat.setParameter（SpeechConstant.PARAMETER, "value");
+  其中主要设置三个参数：
+	mIat.setParameter（SpeechConstant.DOMAIN, "iat");
+	mIat.setParameter（SpeechConstant.LANGUAGE, "zh_cn");
+	mIat.setParameter（SpeechConstant.ACCENT, "mandarin");
+  在讯飞提供的demo中的《MSC Reference Manual》，即使用手册中有完整的参数列表
+3.开始听写：
+	mIat.startListening(mRecoListener);
+  mRecoListener是听写监听器,里面有很多回调函数:
+	//听写监听器
+  private RecognizerListener mRecoListener = new RecognizerListener(){
+	public void onResult(RecognizerResult results, boolean isLast){}
+	public void onError(SpeechError error){}
+	public void onBeginOfSpeech(){} //开始录音
+	public void onVolumeChanged(int volume){}
+	public void onEndOfSpeech(){} //结束录音
+	public void onEvent(int eventType, int arg1, int Bundle obj){} //扩展函数，目前还没用到
+  };	
+
+语法文件识别多了一个步骤，在开始识别之前需要构建语法。

@@ -25,6 +25,7 @@ import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.iflytek.sunflower.FlowerCollector;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -42,7 +43,6 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import io.rong.imkit.RongIM;
-import io.rong.imkit.widget.adapter.BaseAdapter;
 import io.rong.imlib.RongIMClient;
 
 
@@ -196,7 +196,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             if (isLast) {
                 // TODO 最后的结果
-                printResult(results);
             }
         }
 
@@ -215,6 +214,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
             //		Log.d(TAG, "session id =" + sid);
             //	}
         }
+    };
+
+    /**
+     * 听写UI监听器
+     */
+    private RecognizerDialogListener mRecognizerDialogListener = new RecognizerDialogListener() {
+        public void onResult(RecognizerResult results, boolean isLast) {
+            printResult(results);
+        }
+
+        /**
+         * 识别回调错误.
+         */
+        public void onError(SpeechError error) {
+            showTip(error.getPlainDescription(true));
+        }
+
     };
 
     private void printResult(RecognizerResult results) {
@@ -254,6 +270,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void setParam() {
         // 清空参数
         mIat.setParameter(SpeechConstant.PARAMS, null);
+        //设置语法 ID 和 SUBJECT 为空，以免因之前有语法调用而设置了此参数；或直接清空所有参数，参考科大讯飞MSC集成指南。
+        mIat.setParameter(SpeechConstant.CLOUD_GRAMMAR, null);
+        mIat.setParameter(SpeechConstant.SUBJECT, null);
+
         mIat.setParameter(SpeechConstant.DOMAIN, "iat");
         // 设置听写引擎
         mIat.setParameter(SpeechConstant.ENGINE_TYPE, mEngineType);

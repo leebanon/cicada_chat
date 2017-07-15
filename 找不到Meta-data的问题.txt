@@ -1,0 +1,11 @@
+Logcat中出现以下提示：
+jikexueyuan.cicada_chat E/Collector: Can not find IFLYTEK_APPKEY meta-data from AndroidManifest.xml.
+即没有在AndroidManifest.xml中添加讯飞云的meta-data，打开Manifest，添加如下字段：
+	<meta-data
+            android:name="IFLYTEK_APPKEY"
+            android:value="'575816bd'" />
+        <meta-data
+            android:name="IFLYTEK_CHANNEL"
+            android:value="xinfeiyunliao"/>
+注意：id的value中双引号中嵌套着单引号，否则会报错。
+然后重新编译。

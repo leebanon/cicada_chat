@@ -76,6 +76,12 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
+        <meta-data
+            android:name="IFLYTEK_APPKEY"
+            android:value="'575816bd'" />
+        <meta-data
+            android:name="IFLYTEK_CHANNEL"
+            android:value="xinfeiyunliao"/>
     </application>
 
 </manifest>
