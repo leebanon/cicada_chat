@@ -1,0 +1,19 @@
+按照speechDemo把讯飞云模块导入并编写好文件后，遇到了闪退异常：
+FATAL EXCEPTION: main
+	Process: com.jikexueyuan.cicada_chat, PID: 9011
+	java.long.NullPointerException: Attempt to invoke virtual method 'boolean com.iflytek.cloud.SpeechRecognizer.setParameter(java.lang.String, java.lang.String)' on a null object reference
+	at com.jikexueyuan.cicada_chat.MainActivity.setParam(MainActivity.java:275)
+即试图引用一个空对象引用，是由于mIat对象未初始化成功造成的：https://stackoverflow.com/questions/4635715/java-lang-nullpointerexception
+
+
+解决办法：
+在src/main目录下新建jniLibs文件夹，将讯飞云平台下载的SDK包中libs文件夹下的各种版本的libmsc.so文件拷贝到jniLibs文件夹中，即可
+但是为什么不能在build.gradle的souceSets中添加如下语句：
+sourceSets {
+    main {
+        jni.srcDirs = []
+        jniLibs.srcDirs = ['src/main/libs']
+    }
+一旦添加就会报错：
+Error:(24, 0) Could not get unknown property 'jni' for source set 'main' of type org.gradle.api.internal.tasks.DefaultSourceSet.
+<a href="openFile:E:\AndroidProject\Cicada_chat\app\build.gradle">Open File</a>
