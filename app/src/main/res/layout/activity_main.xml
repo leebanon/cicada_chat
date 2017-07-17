@@ -29,7 +29,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_speech"
-        android:layout_above="@+id/iat_Text"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@+id/lv_friendlist"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"/>
+
+    <Button
+        android:text="Iat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lv_friendlist"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="50dp"
+        android:layout_marginEnd="50dp"
+        android:id="@+id/btn_Iat"/>
 
 </RelativeLayout>

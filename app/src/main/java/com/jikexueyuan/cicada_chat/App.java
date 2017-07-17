@@ -2,6 +2,7 @@ package com.jikexueyuan.cicada_chat;
 
 import android.app.Application;
 
+import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 
 import io.rong.imkit.RongIM;
@@ -19,7 +20,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        SpeechUtility.createUtility(App.this, "appid=" + getString(R.string.xfyun_id));
+        SpeechUtility.createUtility(App.this, SpeechConstant.APPID+"=575816bd");
         RongIM.init(this);
     }
 }

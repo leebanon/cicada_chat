@@ -41,7 +41,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            android:
         </activity>
         <activity android:name=".ConversationActivity">
             <intent-filter>
@@ -65,7 +64,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/rc_file_path"/>
         </provider>
-
+        <activity
+            android:name="com.jikexueyuan.cicada_chat.IatDemo"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name="com.jikexueyuan.cicada_chat.IatSettings" >
+        </activity>
         <activity android:name=".RegActivity">
         </activity>
         <activity android:name=".LoginActivity">

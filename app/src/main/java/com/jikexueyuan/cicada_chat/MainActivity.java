@@ -83,17 +83,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             public void onSuccess(String s) {
                 Toast.makeText(MainActivity.this, "Login Success " + s, Toast.LENGTH_LONG).show();
 
-                // 初始化识别无UI识别对象
-                // 使用SpeechRecognizer对象，可根据回调消息自定义界面；
-                mIat = SpeechRecognizer.createRecognizer(MainActivity.this, mInitListener);
-
-                // 初始化听写Dialog，如果只使用有UI听写功能，无需创建SpeechRecognizer
-                // 使用UI听写功能，请根据sdk文件目录下的notice.txt,放置布局文件和图片资源
-                mSharedPreferences = getSharedPreferences(IatSettings.PREFER_NAME,
-                        Activity.MODE_PRIVATE);
-                mToast = Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT);
-                mResultText = (EditText) findViewById(R.id.iat_Text);
-
             }
 
             @Override
@@ -119,8 +108,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 RongIM.getInstance().startPrivateChat(MainActivity.this, target, null);
             }
         });
-//        Button btn_speech = (Button) findViewById(R.id.btn_speech);
+        // 初始化识别无UI识别对象
+        // 使用SpeechRecognizer对象，可根据回调消息自定义界面；
+        mIat = SpeechRecognizer.createRecognizer(MainActivity.this, mInitListener);
+
+        // 初始化听写Dialog，如果只使用有UI听写功能，无需创建SpeechRecognizer
+        // 使用UI听写功能，请根据sdk文件目录下的notice.txt,放置布局文件和图片资源
+        mSharedPreferences = getSharedPreferences(IatSettings.PREFER_NAME,
+                Activity.MODE_PRIVATE);
+        mToast = Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT);
+
+        mResultText = (EditText) findViewById(R.id.iat_Text);
         findViewById(R.id.btn_speech).setOnClickListener(MainActivity.this);
+        findViewById(R.id.btn_Iat).setOnClickListener(MainActivity.this);
 
     }
 
@@ -133,7 +133,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             // 如何判断一次听写结束：OnResult isLast=true 或者 onError
             case R.id.btn_speech:
                 // 移动数据分析，收集开始听写事件
-                FlowerCollector.onEvent(MainActivity.this, "iat_recognize");
+                FlowerCollector.onEvent(MainActivity.this,"iat");
 
                 mResultText.setText(null);// 清空显示内容
                 mIatResults.clear();
@@ -146,6 +146,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     showTip(getString(R.string.text_begin));
                 }
                 break;
+            case R.id.btn_Iat:
+                Intent intent = new Intent(MainActivity.this, IatDemo.class);
+                startActivity(intent);
             default:
                 break;
         }
@@ -271,14 +274,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // 清空参数
         mIat.setParameter(SpeechConstant.PARAMS, null);
         //设置语法 ID 和 SUBJECT 为空，以免因之前有语法调用而设置了此参数；或直接清空所有参数，参考科大讯飞MSC集成指南。
-        mIat.setParameter(SpeechConstant.CLOUD_GRAMMAR, null);
-        mIat.setParameter(SpeechConstant.SUBJECT, null);
+//        mIat.setParameter(SpeechConstant.CLOUD_GRAMMAR, null);
+//        mIat.setParameter(SpeechConstant.SUBJECT, null);
 
         mIat.setParameter(SpeechConstant.DOMAIN, "iat");
         // 设置听写引擎
         mIat.setParameter(SpeechConstant.ENGINE_TYPE, mEngineType);
-        mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
-        mIat.setParameter(SpeechConstant.ACCENT, "mandarin ");
         // 设置返回结果格式
         mIat.setParameter(SpeechConstant.RESULT_TYPE, "json");
 
@@ -321,6 +322,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+//        // 退出时释放连接
+//        mIat.cancel();
+//        mIat.destroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // 开放统计 移动数据统计分析
+        FlowerCollector.onResume(MainActivity.this);
+        FlowerCollector.onPageStart(TAG);
+        super.onResume();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflate = getMenuInflater();
@@ -340,25 +360,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             refreshFriendList();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-//        // 退出时释放连接
-//        mIat.cancel();
-//        mIat.destroy();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // 开放统计 移动数据统计分析
-        FlowerCollector.onResume(MainActivity.this);
-        FlowerCollector.onPageStart(TAG);
-        super.onResume();
     }
 
     private void refreshFriendList() {
