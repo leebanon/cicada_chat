@@ -23,9 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:name="io.rong.imkit.fragment.ConversationFragment"
-        android:layout_below="@+id/et_message"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="42dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/et_message"/>
 
 </RelativeLayout>

@@ -18,7 +18,6 @@ import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
-import com.iflytek.cloud.resource.Resource;
 import com.iflytek.sunflower.FlowerCollector;
 
 import org.json.JSONException;
@@ -29,6 +28,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.ImageMessage;
@@ -45,6 +47,9 @@ public class ConversationActivity extends FragmentActivity  {
     // 用HashMap存储听写结果
     private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
     private EditText et_message;
+    private String mTargetID;
+    private Conversation.ConversationType mConversationType;
+    String recognizerResults;
 
     int ret = 0; // 函数调用返回值
 
@@ -80,20 +85,17 @@ public class ConversationActivity extends FragmentActivity  {
             public Message onSend(Message message) {
                 //开发者根据自己需求自行处理逻辑
                 MessageContent messageContent = message.getContent();
-                et_message.setText(null);
                 if(messageContent instanceof TextMessage){
                     TextMessage textMessage = (TextMessage) messageContent;
                     String sendMessage = textMessage.getContent();
                     Log.e(TAG, "sendMessage " + sendMessage);
-                    et_message.setText(sendMessage);
                 }
                 if(messageContent instanceof VoiceMessage){
                     VoiceMessage voiceMessage = (VoiceMessage) messageContent;
                     int sendMessageDuration = voiceMessage.getDuration();
                     Uri uri = voiceMessage.getUri();
                     String uri_string = uri.toString();
-                    Log.e(TAG, "voiceMessage " + sendMessageDuration);
-                    et_message.setText("voiceMessage uri is "+ uri_string + "\n");
+                    Log.e(TAG, "voiceMessageDuration " + sendMessageDuration);
 
                 }
                 return message;
@@ -109,6 +111,8 @@ public class ConversationActivity extends FragmentActivity  {
              */
             @Override
             public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+//                et_message.setText(null);
+                mIatResults.clear();
                 if (message.getSentStatus() == Message.SentStatus.FAILED) {
                     if (sentMessageErrorCode == RongIM.SentMessageErrorCode.NOT_IN_CHATROOM) {
                         //不在聊天室
@@ -133,7 +137,9 @@ public class ConversationActivity extends FragmentActivity  {
                     VoiceMessage voiceMessage = (VoiceMessage) messageContent;
                     String vm_Uri = voiceMessage.getUri().toString();
                     Log.d(TAG, "onSent-voiceMessage:" + vm_Uri);
-                    et_message.append("voiceMessage uri is "+ vm_Uri);
+                    et_message.setText("voiceMessage uri is "+ vm_Uri);
+                    mTargetID = message.getTargetId();
+                    mConversationType = message.getConversationType();
 
 
                     // 移动数据分析，收集开始听写事件
@@ -145,10 +151,11 @@ public class ConversationActivity extends FragmentActivity  {
                     mIat.setParameter(SpeechConstant.AUDIO_SOURCE, "-1");
                     ret = mIat.startListening(mRecognizerListener);
 
+
                     if (ret != ErrorCode.SUCCESS) {
                         Toast.makeText(ConversationActivity.this, "识别失败,错误码：" + ret, Toast.LENGTH_SHORT).show();
                     } else {
-                        byte[] audioData = FucUtil.readAudioFile(ConversationActivity.this,vm_Uri);
+                        byte[] audioData = FucUtil.readAudioFile(ConversationActivity.this,"iattest.wav");
 
                         if (null != audioData) {
                             Toast.makeText(ConversationActivity.this, getString(R.string.text_begin_recognizer),Toast.LENGTH_SHORT);
@@ -183,6 +190,17 @@ public class ConversationActivity extends FragmentActivity  {
     protected void onDestroy() {
         super.onDestroy();
         RongIM.getInstance().setSendMessageListener(null);
+        // 退出时释放连接
+        mIat.cancel();
+        mIat.destroy();
+    }
+
+    @Override
+    protected void onResume() {
+        // 开放统计 移动数据统计分析
+        FlowerCollector.onResume(ConversationActivity.this);
+        FlowerCollector.onPageStart("ConversationActivity");
+        super.onResume();
     }
 
     @Override
@@ -192,7 +210,6 @@ public class ConversationActivity extends FragmentActivity  {
         // 开放统计 移动数据统计分析
         FlowerCollector.onResume(ConversationActivity.this);
         FlowerCollector.onPageStart("ConversationActivity");
-        super.onResume();
     }
 
     /**
@@ -236,11 +253,12 @@ public class ConversationActivity extends FragmentActivity  {
 
         @Override
         public void onResult(RecognizerResult results, boolean isLast) {
-            Log.d("ConversationActivity", results.getResultString());
-            printResult(results);
-
+            recognizerResults = printResult(results);
             if (isLast) {
                 // TODO 最后的结果
+
+                mySendTextMessage(recognizerResults);
+
             }
         }
 
@@ -261,7 +279,7 @@ public class ConversationActivity extends FragmentActivity  {
         }
     };
 
-    private void printResult(RecognizerResult results) {
+    private String printResult(RecognizerResult results) {
         String text = JsonParser.parseIatResult(results.getResultString());
 
         String sn = null;
@@ -279,9 +297,40 @@ public class ConversationActivity extends FragmentActivity  {
         for (String key : mIatResults.keySet()) {
             resultBuffer.append(mIatResults.get(key));
         }
+        return resultBuffer.toString();
+    }
 
-        et_message.append(resultBuffer.toString());
-        et_message.setSelection(et_message.length());
+    private void mySendTextMessage(String rr){
+        TextMessage textMessage = TextMessage.obtain(rr);
+        Message myMessage = Message.obtain(mTargetID, mConversationType, textMessage);
+
+        RongIM.getInstance().sendMessage(myMessage, null, null, new IRongCallback.ISendMediaMessageCallback() {
+            @Override
+            public void onProgress(Message message, int i) {
+
+            }
+
+            @Override
+            public void onCanceled(Message message) {
+
+            }
+
+            @Override
+            public void onAttached(Message message) {
+
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                Log.e("Send tM success", message.getContent().toString());
+
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                Log.e("Send textMessage error", errorCode.toString());
+            }
+        });
     }
 
 

@@ -11,11 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.jikexueyuan.cicada_chat.MainActivity">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/lv_friendlist"/>
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -25,25 +20,19 @@
         android:textSize="20sp"/>
 
     <Button
-        android:text="@string/start_speech"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_speech"
-        android:layout_below="@+id/lv_friendlist"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp"/>
-
-    <Button
         android:text="Iat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lv_friendlist"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="50dp"
-        android:layout_marginEnd="50dp"
-        android:id="@+id/btn_Iat"/>
+        android:id="@+id/btn_Iat"
+        android:layout_alignBaseline="@+id/iat_Text"
+        android:layout_alignBottom="@+id/iat_Text"
+        android:layout_centerHorizontal="true"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/lv_friendlist"
+        android:layout_alignParentTop="true"
+        />
 
 </RelativeLayout>
