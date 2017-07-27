@@ -18,6 +18,7 @@ import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
+import com.iflytek.cloud.SpeechUtility;
 import com.iflytek.sunflower.FlowerCollector;
 
 import org.json.JSONException;
@@ -60,6 +61,10 @@ public class ConversationActivity extends FragmentActivity  {
 
         setTitle("Chating");
         et_message = (EditText) findViewById(R.id.et_message);
+
+        if (SpeechUtility.getUtility() == null) {
+            SpeechUtility.createUtility(ConversationActivity.this, SpeechConstant.APPID + "=575816bd"); //初始化
+        }
 
         // 初始化识别无UI识别对象
         // 使用SpeechRecognizer对象，可根据回调消息自定义界面；
