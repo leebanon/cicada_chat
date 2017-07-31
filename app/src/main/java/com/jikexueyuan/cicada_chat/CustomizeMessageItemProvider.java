@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import io.rong.imkit.emoticon.AndroidEmoji;
 import io.rong.imkit.model.ProviderTag;
+import io.rong.imkit.model.UIMessage;
+
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
 
@@ -25,7 +27,7 @@ public class CustomizeMessageItemProvider extends IContainerItemProvider.Message
 
     @Override
     public View newView(Context context, ViewGroup group) {
-        View view = LayoutInflater.from(context).inflate(io.rong.imkit.R.layout.item_customize_message, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.rc_item_customize_message, null);
         ViewHolder holder = new ViewHolder();
         holder.message = (TextView) view.findViewById(android.R.id.text1);
         view.setTag(holder);
@@ -33,7 +35,7 @@ public class CustomizeMessageItemProvider extends IContainerItemProvider.Message
     }
 
     @Override
-    public void bindView(View v, int position, CustomizeMessage content, Message message) {
+    public void bindView(View v, int position, CustomizeMessage content, UIMessage message) {
         ViewHolder holder = (ViewHolder) v.getTag();
 
         if (message.getMessageDirection() == Message.MessageDirection.SEND) {//消息方向，自己发送的
@@ -51,12 +53,12 @@ public class CustomizeMessageItemProvider extends IContainerItemProvider.Message
     }
 
     @Override
-    public void onItemClick(View view, int position, CustomizeMessage content, Message message) {
+    public void onItemClick(View view, int position, CustomizeMessage content, UIMessage message) {
 
     }
 
     @Override
-    public void onItemLongClick(View view, int position, CustomizeMessage content, Message message) {
+    public void onItemLongClick(View view, int position, CustomizeMessage content, UIMessage message) {
 
     }
 

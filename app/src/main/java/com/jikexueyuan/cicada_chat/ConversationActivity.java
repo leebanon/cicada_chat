@@ -68,8 +68,9 @@ public class ConversationActivity extends FragmentActivity  {
 
         // 初始化识别无UI识别对象
         // 使用SpeechRecognizer对象，可根据回调消息自定义界面；
-        mIat = SpeechRecognizer.createRecognizer(ConversationActivity.this, mInitListener);
-
+        if (mIat == null) {
+            mIat = SpeechRecognizer.createRecognizer(ConversationActivity.this, mInitListener);
+        }
         // 初始化听写Dialog，如果只使用有UI听写功能，无需创建SpeechRecognizer
         // 使用UI听写功能，请根据sdk文件目录下的notice.txt,放置布局文件和图片资源
         mSharedPreferences = getSharedPreferences(IatSettings.PREFER_NAME,

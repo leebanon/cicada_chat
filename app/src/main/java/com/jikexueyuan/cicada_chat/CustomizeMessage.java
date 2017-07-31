@@ -1,5 +1,6 @@
 package com.jikexueyuan.cicada_chat;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.util.Log;
 
@@ -21,6 +22,7 @@ import io.rong.imlib.model.MessageContent;
 @MessageTag(value = "app:custom", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
 public class CustomizeMessage extends MessageContent{
     private String content;
+    private Bitmap bitmap;
 
     @Override
     public byte[] encode() {
@@ -41,7 +43,9 @@ public class CustomizeMessage extends MessageContent{
         return null;
     }
 
+
     public CustomizeMessage(byte[] data) {
+        super(data);
         String jsonStr = null;
 
         try {
@@ -65,6 +69,9 @@ public class CustomizeMessage extends MessageContent{
     //给消息赋值。
     public CustomizeMessage(Parcel in) {
         content= ParcelUtils.readFromParcel(in);//该类为工具类，消息属性
+
+        this.content = in.readString();
+        this.bitmap = in.readParcelable(Bitmap.class.getClassLoader());
         //这里可继续增加你消息的属性
     }
 
@@ -89,6 +96,7 @@ public class CustomizeMessage extends MessageContent{
      *
      * @return 一个标志位，表明Parcelable对象特殊对象类型集合的排列。
      */
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -102,12 +110,25 @@ public class CustomizeMessage extends MessageContent{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         ParcelUtils.writeToParcel(dest, content);//该类为工具类，对消息中属性进行序列化
-
+        dest.writeString(this.content);
+        dest.writeParcelable(this.bitmap,0);
         //这里可继续增加你消息的属性
     }
 
 
     public String getContent() {
         return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

@@ -68,12 +68,12 @@
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_icon_rt_location_marker.xml"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_app_service_conversation.xml",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_app_service_conversation.xml"
-    },
-    {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_ext_extension_bar.xml",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_ext_extension_bar.xml"
+    },
+    {
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_app_service_conversation.xml",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_app_service_conversation.xml"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_item_public_service_input_menu.xml",
@@ -132,12 +132,12 @@
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_fr_dialog_alter.xml"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_dialog_popup_prompt.xml",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_dialog_popup_prompt.xml"
-    },
-    {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_ac_file_download.xml",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_ac_file_download.xml"
+    },
+    {
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_dialog_popup_prompt.xml",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_dialog_popup_prompt.xml"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\release\\layout\\rc_wi_file_list_adapter.xml",
