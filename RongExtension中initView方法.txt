@@ -1,0 +1,188 @@
+ private void initView() {
+        this.setOrientation(1);
+        this.setBackgroundColor(this.getContext().getResources().getColor(color.rc_extension_normal));
+        this.mExtensionBar = (ViewGroup)LayoutInflater.from(this.getContext()).inflate(layout.rc_ext_extension_bar, (ViewGroup)null);
+        this.mMainBar = (LinearLayout)this.mExtensionBar.findViewById(id.ext_main_bar);
+        this.mSwitchLayout = (ViewGroup)this.mExtensionBar.findViewById(id.rc_switch_layout);
+        this.mContainerLayout = (ViewGroup)this.mExtensionBar.findViewById(id.rc_container_layout);
+        this.mPluginLayout = (ViewGroup)this.mExtensionBar.findViewById(id.rc_plugin_layout);
+        this.mEditTextLayout = LayoutInflater.from(this.getContext()).inflate(layout.rc_ext_input_edit_text, (ViewGroup)null);
+        this.mEditTextLayout.setVisibility(0);
+        this.mContainerLayout.addView(this.mEditTextLayout);
+        LayoutInflater.from(this.getContext()).inflate(layout.rc_ext_voice_input, this.mContainerLayout, true);
+        this.mVoiceInputToggle = this.mContainerLayout.findViewById(id.rc_audio_input_toggle);
+        this.mVoiceInputToggle.setVisibility(8);
+        this.mEditText = (EditText)this.mExtensionBar.findViewById(id.rc_edit_text);
+        this.mSendToggle = (FrameLayout)this.mExtensionBar.findViewById(id.rc_send_toggle);
+        this.mPluginToggle = (ImageView)this.mExtensionBar.findViewById(id.rc_plugin_toggle);
+        this.mEditText.setOnTouchListener(new OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if(0 == event.getAction()) {
+                    if(RongExtension.this.mExtensionClickListener != null) {
+                        RongExtension.this.mExtensionClickListener.onEditTextClick(RongExtension.this.mEditText);
+                    }
+
+                    RongExtension.this.showInputKeyBoard();
+                    RongExtension.this.mContainerLayout.setSelected(true);
+                    RongExtension.this.hidePluginBoard();
+                    RongExtension.this.hideEmoticonBoard();
+                }
+
+                return false;
+            }
+        });
+        this.mEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus && !TextUtils.isEmpty(RongExtension.this.mEditText.getText())) {
+                    RongExtension.this.mSendToggle.setVisibility(0);
+                    RongExtension.this.mPluginLayout.setVisibility(8);
+                }
+
+            }
+        });
+        this.mEditText.addTextChangedListener(new TextWatcher() {
+            private int start;
+            private int count;
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(RongExtension.this.mExtensionClickListener != null) {
+                    RongExtension.this.mExtensionClickListener.beforeTextChanged(s, start, count, after);
+                }
+
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                this.start = start;
+                this.count = count;
+                if(RongExtension.this.mExtensionClickListener != null) {
+                    RongExtension.this.mExtensionClickListener.onTextChanged(s, start, before, count);
+                }
+
+                if(RongExtension.this.mVoiceInputToggle.getVisibility() == 0) {
+                    RongExtension.this.mSendToggle.setVisibility(8);
+                    RongExtension.this.mPluginLayout.setVisibility(0);
+                } else if(s != null && s.length() != 0) {
+                    RongExtension.this.mSendToggle.setVisibility(0);
+                    RongExtension.this.mPluginLayout.setVisibility(8);
+                } else {
+                    RongExtension.this.mSendToggle.setVisibility(8);
+                    RongExtension.this.mPluginLayout.setVisibility(0);
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(AndroidEmoji.isEmoji(s.subSequence(this.start, this.start + this.count).toString())) {
+                    RongExtension.this.mEditText.removeTextChangedListener(this);
+                    RongExtension.this.mEditText.setText(AndroidEmoji.ensure(s.toString()), BufferType.SPANNABLE);
+                    RongExtension.this.mEditText.setSelection(this.start + this.count);
+                    RongExtension.this.mEditText.addTextChangedListener(this);
+                }
+
+                if(RongExtension.this.mExtensionClickListener != null) {
+                    RongExtension.this.mExtensionClickListener.afterTextChanged(s);
+                }
+
+            }
+        });
+        this.mEditText.setOnKeyListener(new OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return RongExtension.this.mExtensionClickListener != null && RongExtension.this.mExtensionClickListener.onKey(RongExtension.this.mEditText, keyCode, event);
+            }
+        });
+        this.mVoiceToggle = (ImageView)this.mExtensionBar.findViewById(id.rc_voice_toggle);
+        this.mVoiceToggleClickListener = new OnClickListener() {
+            public void onClick(View v) {
+                if(RongExtension.this.mExtensionClickListener != null) {
+                    RongExtension.this.mExtensionClickListener.onSwitchToggleClick(v, RongExtension.this.mContainerLayout);
+                }
+
+                if(RongExtension.this.mVoiceInputToggle.getVisibility() == 8) {
+                    RongExtension.this.mEditTextLayout.setVisibility(8);
+                    RongExtension.this.mSendToggle.setVisibility(8);
+                    RongExtension.this.mPluginLayout.setVisibility(0);
+                    RongExtension.this.hideInputKeyBoard();
+                    RongExtension.this.showVoiceInputToggle();
+                    RongExtension.this.mContainerLayout.setClickable(true);
+                    RongExtension.this.mContainerLayout.setSelected(false);
+                } else {
+                    RongExtension.this.mEditTextLayout.setVisibility(0);
+                    RongExtension.this.hideVoiceInputToggle();
+                    RongExtension.this.mEmoticonToggle.setImageResource(drawable.rc_emotion_toggle_selector);
+                    if(RongExtension.this.mEditText.getText().length() > 0) {
+                        RongExtension.this.mSendToggle.setVisibility(0);
+                        RongExtension.this.mPluginLayout.setVisibility(8);
+                    } else {
+                        RongExtension.this.mSendToggle.setVisibility(8);
+                        RongExtension.this.mPluginLayout.setVisibility(0);
+                    }
+
+                    RongExtension.this.showInputKeyBoard();
+                    RongExtension.this.mContainerLayout.setSelected(true);
+                }
+
+                RongExtension.this.hidePluginBoard();
+                RongExtension.this.hideEmoticonBoard();
+            }
+        };
+        this.mVoiceToggle.setOnClickListener(this.mVoiceToggleClickListener);
+        this.mVoiceInputToggle.setOnTouchListener(new OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if(RongExtension.this.mExtensionClickListener != null) {
+                    RongExtension.this.mExtensionClickListener.onVoiceInputToggleTouch(v, event);
+                }
+
+                return false;
+            }
+        });
+        this.mSendToggle.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                String text = RongExtension.this.mEditText.getText().toString();
+                RongExtension.this.mEditText.getText().clear();
+                RongExtension.this.mEditText.setText("");
+                if(RongExtension.this.mExtensionClickListener != null) {
+                    RongExtension.this.mExtensionClickListener.onSendToggleClick(v, text);
+                }
+
+            }
+        });
+        this.mPluginToggle.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                if(RongExtension.this.mExtensionClickListener != null) {
+                    RongExtension.this.mExtensionClickListener.onPluginToggleClick(v, RongExtension.this);
+                }
+
+                RongExtension.this.setPluginBoard();
+            }
+        });
+        this.mEmoticonToggle = (ImageView)this.mExtensionBar.findViewById(id.rc_emoticon_toggle);
+        this.mEmoticonToggle.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                if(RongExtension.this.mExtensionClickListener != null) {
+                    RongExtension.this.mExtensionClickListener.onEmoticonToggleClick(v, RongExtension.this);
+                }
+
+                if(RongExtension.this.isKeyBoardActive()) {
+                    RongExtension.this.hideInputKeyBoard();
+                    RongExtension.this.getHandler().postDelayed(new Runnable() {
+                        public void run() {
+                            RongExtension.this.setEmoticonBoard();
+                        }
+                    }, 200L);
+                } else {
+                    RongExtension.this.setEmoticonBoard();
+                }
+
+                RongExtension.this.hidePluginBoard();
+            }
+        });
+        this.mPSMenu = (ImageView)this.mExtensionBar.findViewById(id.rc_switch_to_menu);
+        this.mPSMenu.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                RongExtension.this.setExtensionBarVisibility(8);
+                RongExtension.this.setMenuVisibility(0, RongExtension.this.mInputMenuList);
+            }
+        });
+        this.mPSDivider = this.mExtensionBar.findViewById(id.rc_switch_divider);
+        this.addView(this.mExtensionBar);
+    }

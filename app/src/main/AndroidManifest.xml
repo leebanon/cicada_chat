@@ -42,7 +42,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ConversationActivity">
+        <activity
+            android:name=".ConversationActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 

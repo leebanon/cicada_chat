@@ -1,0 +1,42 @@
+今天在继承ConversationFragment时，直接从ConversationFragment.class中拷贝了以下代码：
+RongIMClient.getInstance().getTextMessageDraft(this.mConversationType, this.mTargetId, new ResultCallback() {
+                public void onSuccess(String s) {
+                    MyConversationFragment.this.mDraft = s;
+                    if(MyConversationFragment.this.mRongExtension != null) {
+                        EditText editText = MyConversationFragment.this.mRongExtension.getInputEditText();
+                        editText.setText(s);
+                        editText.setSelection(editText.length());
+                        MyConversationFragment.this.mRongExtension.setExtensionClickListener(MyConversationFragment.this);
+                    }
+                }
+
+                public void onError(RongIMClient.ErrorCode errorCode) {
+                    if(MyConversationFragment.this.mRongExtension != null) {
+                        MyConversationFragment.this.mRongExtension.setExtensionClickListener(MyConversationFragment.this);
+                    }
+                }
+            });
+结果出现了
+class 'anonymous class derived from ResultCallback' must either be declared abstact or implement abstract method onSuccess(T) in ResultCallback和Unchecked assignment: 'anonymous io.rong.imlib.RongIMClient.ResultCallback' to 'io.rong.imlib.RongIMClient.ResultCallback<String>'的错误。
+
+出现这样的错误可能是没有实现抽象方法，或者调用的方法不对，比如本来需要调用import io.rong.imlib.RongIMClient.ResultCallback的ResultCallback，结果调用了其他库中的ResultCallback方法，但是不明白为什么拷贝的代码还会出现这样的错误，而且明明在ResultCallback中已经实现了onSuccess方法，在onSuccess前添加@Override也不行。后终于找出原因：
+在new ResultCallback后添加 <String>即可：
+RongIMClient.getInstance().getTextMessageDraft(this.mConversationType, this.mTargetId, new ResultCallback<String>() {
+                @Override
+		public void onSuccess(String s) {
+                    MyConversationFragment.this.mDraft = s;
+                    if(MyConversationFragment.this.mRongExtension != null) {
+                        EditText editText = MyConversationFragment.this.mRongExtension.getInputEditText();
+                        editText.setText(s);
+                        editText.setSelection(editText.length());
+                        MyConversationFragment.this.mRongExtension.setExtensionClickListener(MyConversationFragment.this);
+                    }
+                }
+
+		@Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+                    if(MyConversationFragment.this.mRongExtension != null) {
+                        MyConversationFragment.this.mRongExtension.setExtensionClickListener(MyConversationFragment.this);
+                    }
+                }
+            });

@@ -24,20 +24,20 @@
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_phone_normal.png"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_volume_7.png",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_volume_7.png"
-    },
-    {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_read_receipt_request.png",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_read_receipt_request.png"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_pb_file_download_progress_background.9.png",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_pb_file_download_progress_background.9.png"
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_volume_7.png",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_volume_7.png"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_cs_evaluate_plugin_hover.png",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_cs_evaluate_plugin_hover.png"
+    },
+    {
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_pb_file_download_progress_background.9.png",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_pb_file_download_progress_background.9.png"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_fr_file_list_ad_icon_folder.png",

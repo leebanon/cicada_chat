@@ -13,7 +13,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:id="@+id/et_message"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
@@ -21,8 +21,8 @@
     <fragment
         android:id="@+id/conversation"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:name="io.rong.imkit.fragment.ConversationFragment"
+        android:layout_height="350dp"
+        android:name="com.jikexueyuan.cicada_chat.MyConversationFragment"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
