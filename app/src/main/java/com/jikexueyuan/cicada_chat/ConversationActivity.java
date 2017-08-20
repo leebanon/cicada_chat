@@ -21,7 +21,7 @@ import io.rong.message.RichContentMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 
-public class ConversationActivity extends FragmentActivity implements MyFirstConversationFragment.OnFragmentInteractionListener {
+public class ConversationActivity extends FragmentActivity {
 
     private EditText et_message;
     private String mTargetID;
@@ -149,8 +149,5 @@ public class ConversationActivity extends FragmentActivity implements MyFirstCon
         FlowerCollector.onPageStart("ConversationActivity");
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-    }
 }
 

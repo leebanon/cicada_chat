@@ -1,7 +1,18 @@
 package com.jikexueyuan.cicada_chat;
 
 import android.app.Activity;
+import android.content.Context;
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
+import android.media.audiofx.AcousticEchoCanceler;
+import android.media.audiofx.AutomaticGainControl;
+import android.media.audiofx.NoiseSuppressor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +23,12 @@ import android.widget.LinearLayout;
 
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.thirdparty.V;
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import io.rong.imkit.IExtensionClickListener;
 import io.rong.imkit.RongExtension;
@@ -42,10 +59,14 @@ public class MyConversationFragment extends ConversationFragment implements AbsL
     private float mLastTouchY;
     private boolean mUpDirection;
     private float mOffsetLimit;
+    private IExtensionClickListener mExtensionClickListener;
+
+    private AudioManager mAudioManager;
+    private AudioSourceMic mAudioSourceMic;
 
 
 
-    public MyConversationFragment (){
+    public MyConversationFragment() {
     }
 
     @Override
@@ -56,34 +77,42 @@ public class MyConversationFragment extends ConversationFragment implements AbsL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        mRongExtension = (RongExtension)view.findViewById(io.rong.imkit.R.id.rc_extension);
+        mRongExtension = (RongExtension) view.findViewById(io.rong.imkit.R.id.rc_extension);
         mRongExtension.setFragment(this);
+
+//        mRongExtension.getConversationType();
+//        mRongExtension.getTargetId();
+//        mRongExtension.setC
 //
-//        mExtensionBar = (ViewGroup)LayoutInflater.from(getContext()).inflate(R.layout.rc_ext_extension_bar, (ViewGroup)null);
+//        mExtensionBar = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.rc_ext_extension_bar, (ViewGroup) null);
 //
-//        mMainBar = (LinearLayout)mExtensionBar.findViewById(io.rong.imkit.R.id.ext_main_bar);
-//        mSwitchLayout = (ViewGroup)mExtensionBar.findViewById(io.rong.imkit.R.id.rc_switch_layout);
-//        mContainerLayout = (ViewGroup)mExtensionBar.findViewById(io.rong.imkit.R.id.rc_container_layout);
-//        mPluginLayout = (ViewGroup)mExtensionBar.findViewById(io.rong.imkit.R.id.rc_plugin_layout);
+//        mMainBar = (LinearLayout) mExtensionBar.findViewById(io.rong.imkit.R.id.ext_main_bar);
+//        mSwitchLayout = (ViewGroup) mExtensionBar.findViewById(io.rong.imkit.R.id.rc_switch_layout);
+//        mContainerLayout = (ViewGroup) mExtensionBar.findViewById(io.rong.imkit.R.id.rc_container_layout);
+//        mPluginLayout = (ViewGroup) mExtensionBar.findViewById(io.rong.imkit.R.id.rc_plugin_layout);
 //
-//        mEditTextLayout = LayoutInflater.from(this.getContext()).inflate(io.rong.imkit.R.layout.rc_ext_input_edit_text, (ViewGroup)null);
+//        mEditTextLayout = LayoutInflater.from(this.getContext()).inflate(io.rong.imkit.R.layout.rc_ext_input_edit_text, (ViewGroup) null);
 //        mEditTextLayout.setVisibility(View.VISIBLE);
 //        mContainerLayout.addView(this.mEditTextLayout);
 //        LayoutInflater.from(getContext()).inflate(io.rong.imkit.R.layout.rc_ext_voice_input, this.mContainerLayout, true);
-        mVoiceInputToggle = mContainerLayout.findViewById(io.rong.imkit.R.id.rc_audio_input_toggle);
-        mVoiceInputToggle.setVisibility(View.GONE);
-
-        mVoiceInputToggle.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return false;
-            }
-        });
+//        mVoiceInputToggle = mContainerLayout.findViewById(io.rong.imkit.R.id.rc_audio_input_toggle);
+//        mVoiceInputToggle.setVisibility(View.GONE);
+//
+//        mVoiceInputToggle.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                if (mExtensionClickListener != null) {
+//                    mExtensionClickListener.onVoiceInputToggleTouch(view, motionEvent);
+//                }
+//                return false;
+//            }
+//        });
         return view;
     }
 
     @Override
     public void onVoiceInputToggleTouch(View v, MotionEvent event) {
+//        super.onVoiceInputToggleTouch(v, event);
         String[] permissions = new String[]{"android.permission.RECORD_AUDIO"};
         if (!PermissionCheckUtil.checkPermissions(this.getActivity(), permissions)) {
             if (event.getAction() == 0) {
@@ -93,32 +122,71 @@ public class MyConversationFragment extends ConversationFragment implements AbsL
         } else {
             if (event.getAction() == 0) {
                 AudioPlayManager.getInstance().stopPlay();
-                AudioRecordManager.getInstance().startRecord(v.getRootView(), this.mConversationType, this.mTargetId);
-                this.mLastTouchY = event.getY();
-                this.mUpDirection = false;
-                ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input_hover);
-            } else if (event.getAction() == 2) {
-                if (this.mLastTouchY - event.getY() > this.mOffsetLimit && !this.mUpDirection) {
-                    AudioRecordManager.getInstance().willCancelRecord();
-                    this.mUpDirection = true;
-                    ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input);
-                } else if (event.getY() - this.mLastTouchY > -this.mOffsetLimit && this.mUpDirection) {
-                    AudioRecordManager.getInstance().continueRecord();
-                    this.mUpDirection = false;
-                    ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input_hover);
+                mConversationType = mRongExtension.getConversationType();
+                mTargetId = mRongExtension.getTargetId();
+                AudioRecordManager.getInstance().startRecord(v.getRootView(), mConversationType, mTargetId);
+
+                mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+                mAudioSourceMic = new AudioSourceMic();
+                mAudioSourceMic.Create(16000);
+                if (mAudioSourceMic != null)
+                {
+                    mAudioSourceMic.Start();
                 }
+                openSpeaker();
+                mLastTouchY = event.getY();
+                mUpDirection = false;
+                ((Button) v).setText("按住状态");
+            } else if (event.getAction() == 2) {
+                if (mLastTouchY - event.getY() > mOffsetLimit && !mUpDirection) {
+                    AudioRecordManager.getInstance().willCancelRecord();
+                    mUpDirection = true;
+                    ((Button) v).setText("什么状态");
+                } else if (event.getY() - mLastTouchY > - mOffsetLimit && mUpDirection) {
+                    AudioRecordManager.getInstance().continueRecord();
+                    mUpDirection = false;
+                    ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input_hover);}
             } else if (event.getAction() == 1 || event.getAction() == 3) {
                 AudioRecordManager.getInstance().stopRecord();
+                closeSpeaker();
+                if (mAudioSourceMic != null) {
+                    mAudioSourceMic.Close();
+                    mAudioSourceMic = null;
+                }
                 ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input);
+                Log.e("显示聊天类型", "ConversationType is "+ mConversationType + ", TargetId is " + mTargetId);
             }
 
-            if (this.mConversationType.equals(Conversation.ConversationType.PRIVATE)) {
-                RongIMClient.getInstance().sendTypingStatus(this.mConversationType, this.mTargetId, "RC:VcMsg");
+            if (mConversationType.equals(Conversation.ConversationType.PRIVATE)) {
+                RongIMClient.getInstance().sendTypingStatus(mConversationType, mTargetId, "RC:VcMsg");
+//                Log.e("显示聊天类型", "ConversationType is "+ mConversationType + ", TargetId is " + mTargetId);
             }
-
-        }
+    }
 
     }
 
+    @Override
+    public Conversation.ConversationType getConversationType(){
+        return mConversationType;
+    }
 
+    @Override
+    public String getTargetId(){
+        return mTargetId;
+    }
+
+    @Override
+    public void initFragment(Uri uri){
+        super.initFragment(uri);
+    }
+
+    private void openSpeaker() {
+        mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        mAudioManager.setSpeakerphoneOn(true);
+    }
+
+    private void closeSpeaker() {
+        mAudioManager.setSpeakerphoneOn(false);
+    }
 }
+
