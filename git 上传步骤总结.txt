@@ -5,8 +5,7 @@ cd filename
 git init
 然后开始上传：
 1. git add . // add all documents to暂存库
-2. git remote add origin https://github.com/me/repo.git
-这里的me指的是github的账户名，repo指的是github上的仓库名
+2. git remote add origin https://github.com/me/repo.git  //这里的me指的是github的账户名，repo指的是github上的仓库名
 3. git commit -m "first commit"
 4. git push origin master, push之前先pull一下
 
@@ -17,3 +16,8 @@ solution:
 1. git remote rm origin
 2. git gc
 然后重新重复上述操作步骤
+
+
+有一次pull时出现 fatal: refusing to merge unrelated histories 
+solution：
+git pull origin master --allow-unrelated-histories
