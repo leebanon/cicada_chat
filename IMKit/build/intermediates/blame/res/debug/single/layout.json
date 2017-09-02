@@ -24,12 +24,12 @@
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_dialog_popup_options_item.xml"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_input_pager_layout.xml",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_input_pager_layout.xml"
-    },
-    {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_picprev_activity.xml",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_picprev_activity.xml"
+    },
+    {
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_input_pager_layout.xml",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_input_pager_layout.xml"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_conversation_notification_container.xml",
@@ -40,16 +40,16 @@
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_conversation_member.xml"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_item_public_service_conversation.xml",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_public_service_conversation.xml"
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_wi_block_popup.xml",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_wi_block_popup.xml"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_ext_sub_menu_item.xml",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_ext_sub_menu_item.xml"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_wi_block_popup.xml",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_wi_block_popup.xml"
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_item_public_service_conversation.xml",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_public_service_conversation.xml"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_picsel_grid_item.xml",
@@ -72,24 +72,24 @@
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_dialog_popup_options.xml"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_fragment_base_setting.xml",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_fragment_base_setting.xml"
-    },
-    {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_picsel_catalog_listview.xml",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_picsel_catalog_listview.xml"
+    },
+    {
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_fragment_base_setting.xml",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_fragment_base_setting.xml"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_mention_list_item.xml",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_mention_list_item.xml"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_item_group_information_notification_message.xml",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_group_information_notification_message.xml"
-    },
-    {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_item_public_service_search.xml",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_public_service_search.xml"
+    },
+    {
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_item_group_information_notification_message.xml",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_group_information_notification_message.xml"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_ext_plugin_item.xml",
@@ -116,12 +116,12 @@
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_fr_image.xml"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_item_file_message.xml",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_file_message.xml"
-    },
-    {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_ext_voice_input.xml",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_ext_voice_input.xml"
+    },
+    {
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_item_file_message.xml",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_item_file_message.xml"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_dialog_popup_prompt.xml",
@@ -164,12 +164,12 @@
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_ac_picture_pager.xml"
     },
     {
-        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_ac_camera.xml",
-        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_ac_camera.xml"
-    },
-    {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_cs_single_choice_layout.xml",
         "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_cs_single_choice_layout.xml"
+    },
+    {
+        "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_ac_camera.xml",
+        "source": "E:\\AndroidProject\\Cicada_chat\\IMKit\\src\\main\\res\\layout\\rc_ac_camera.xml"
     },
     {
         "merged": "E:\\AndroidProject\\Cicada_chat\\IMKit\\build\\intermediates\\res\\merged\\debug\\layout\\rc_item_public_service_message.xml",

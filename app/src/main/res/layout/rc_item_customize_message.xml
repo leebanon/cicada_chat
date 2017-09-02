@@ -13,13 +13,13 @@
         android:minWidth="52dp">
 
         <ImageView
-            android:id="@id/rc_img"
+            android:id="@+id/rc_customize_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitStart" />
 
         <TextView
-            android:id="@id/rc_left"
+            android:id="@+id/rc_customize_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|left"
@@ -29,7 +29,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@id/rc_right"
+            android:id="@+id/rc_customize_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
@@ -40,7 +40,7 @@
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/rc_voice_unread"
+        android:id="@+id/rc_customize_voice_unread"
         android:layout_width="8dp"
         android:layout_height="8dp"
         android:layout_gravity="center_vertical"

@@ -191,7 +191,7 @@ public class IatDemo extends Activity implements OnClickListener {
 			if (ret != ErrorCode.SUCCESS) {
 				showTip("识别失败,错误码：" + ret);
 			} else {
-				byte[] audioData = FucUtil.readAudioFile(IatDemo.this, "iattest.wav");
+				byte[] audioData = FucUtil.readAudioFile(IatDemo.this, "out_21_23_34.wav");
 				
 				if (null != audioData) {
 					showTip(getString(R.string.text_begin_recognizer));

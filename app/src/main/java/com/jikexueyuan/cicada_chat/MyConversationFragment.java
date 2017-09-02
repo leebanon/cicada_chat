@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.iflytek.cloud.SpeechRecognizer;
@@ -80,6 +81,64 @@ public class MyConversationFragment extends ConversationFragment implements AbsL
         mRongExtension = (RongExtension) view.findViewById(io.rong.imkit.R.id.rc_extension);
         mRongExtension.setFragment(this);
 
+//        mExtensionBar = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.rc_ext_extension_bar, (ViewGroup) null);
+//        mMainBar = (LinearLayout) mExtensionBar.findViewById(io.rong.imkit.R.id.ext_main_bar);
+//        mPluginLayout = (ViewGroup) mExtensionBar.findViewById(io.rong.imkit.R.id.rc_plugin_layout);
+//        ImageView iv = (ImageView) mPluginLayout.findViewById(io.rong.imkit.R.id.music);
+//
+//        iv.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                String[] permissions = new String[]{"android.permission.RECORD_AUDIO"};
+//                if (!PermissionCheckUtil.checkPermissions(getContext(), permissions)) {
+//                    if (event.getAction() == 0) {
+//                        PermissionCheckUtil.requestPermissions((Activity) getContext(), permissions, 100);
+//                    }
+//
+//                } else if (event.getAction() == 0) {
+//                    AudioPlayManager.getInstance().stopPlay();
+//                    mConversationType = mRongExtension.getConversationType();
+//                    mTargetId = mRongExtension.getTargetId();
+//
+//                    mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+//                    mAudioSourceMic = new AudioSourceMic();
+//                    mAudioSourceMic.Create(16000);
+//                    if (mAudioSourceMic != null) {
+//                        mAudioSourceMic.Start();
+//                    }
+//                    openSpeaker();
+//                    mLastTouchY = event.getY();
+//                    mUpDirection = false;
+//                    return false;
+//
+//                } else if (event.getAction() == 2) {
+//                    if (mLastTouchY - event.getY() > mOffsetLimit && !mUpDirection) {
+//                        mUpDirection = true;
+//                    } else if (event.getY() - mLastTouchY > -mOffsetLimit && mUpDirection) {
+//                        mUpDirection = false;
+//                    }
+//                } else if (event.getAction() == 1 || event.getAction() == 3) {
+//                    closeSpeaker();
+//                    if (mAudioSourceMic != null) {
+//                        mAudioSourceMic.Close();
+//                        mAudioSourceMic = null;
+//                    }
+//                    Log.e("显示聊天类型", "ConversationType is " + mConversationType + ", TargetId is " + mTargetId);
+//                }
+//
+//                if (mConversationType.equals(Conversation.ConversationType.PRIVATE)) {
+//                    RongIMClient.getInstance().sendTypingStatus(mConversationType, mTargetId, "RC:VcMsg");
+////                Log.e("显示聊天类型", "ConversationType is "+ mConversationType + ", TargetId is " + mTargetId);
+//                }
+//
+//                return false;
+//            }
+//
+//        });
+
+        return view;
+    }
+
 //        mRongExtension.getConversationType();
 //        mRongExtension.getTargetId();
 //        mRongExtension.setC
@@ -107,8 +166,8 @@ public class MyConversationFragment extends ConversationFragment implements AbsL
 //                return false;
 //            }
 //        });
-        return view;
-    }
+//        return view;
+//    }
 
     @Override
     public void onVoiceInputToggleTouch(View v, MotionEvent event) {
@@ -121,38 +180,38 @@ public class MyConversationFragment extends ConversationFragment implements AbsL
 
         } else {
             if (event.getAction() == 0) {
-                AudioPlayManager.getInstance().stopPlay();
+                MyAudioPlayManager.getInstance().stopPlay();
                 mConversationType = mRongExtension.getConversationType();
                 mTargetId = mRongExtension.getTargetId();
-                AudioRecordManager.getInstance().startRecord(v.getRootView(), mConversationType, mTargetId);
-
-                mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-                mAudioSourceMic = new AudioSourceMic();
-                mAudioSourceMic.Create(16000);
-                if (mAudioSourceMic != null)
-                {
-                    mAudioSourceMic.Start();
-                }
-                openSpeaker();
+                MyAudioRecordManager.getInstance().startRecord(v.getRootView(), mConversationType, mTargetId);
+                Log.e("啪啪啪","看看显示几条信息");
+//                mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+//                mAudioSourceMic = new AudioSourceMic();
+//                mAudioSourceMic.Create(16000);
+//                if (mAudioSourceMic != null)
+//                {
+//                    mAudioSourceMic.Start();
+//                }
+//                openSpeaker();
                 mLastTouchY = event.getY();
                 mUpDirection = false;
                 ((Button) v).setText("按住状态");
             } else if (event.getAction() == 2) {
                 if (mLastTouchY - event.getY() > mOffsetLimit && !mUpDirection) {
-                    AudioRecordManager.getInstance().willCancelRecord();
+                    MyAudioRecordManager.getInstance().willCancelRecord();
                     mUpDirection = true;
                     ((Button) v).setText("什么状态");
                 } else if (event.getY() - mLastTouchY > - mOffsetLimit && mUpDirection) {
-                    AudioRecordManager.getInstance().continueRecord();
+                    MyAudioRecordManager.getInstance().continueRecord();
                     mUpDirection = false;
                     ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input_hover);}
             } else if (event.getAction() == 1 || event.getAction() == 3) {
-                AudioRecordManager.getInstance().stopRecord();
-                closeSpeaker();
-                if (mAudioSourceMic != null) {
-                    mAudioSourceMic.Close();
-                    mAudioSourceMic = null;
-                }
+                MyAudioRecordManager.getInstance().stopRecord();
+//                closeSpeaker();
+//                if (mAudioSourceMic != null) {
+//                    mAudioSourceMic.Close();
+//                    mAudioSourceMic = null;
+//                }
                 ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input);
                 Log.e("显示聊天类型", "ConversationType is "+ mConversationType + ", TargetId is " + mTargetId);
             }

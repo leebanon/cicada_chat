@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/et_username"
+        android:text="lyp"
         android:layout_alignTop="@+id/tv_username"
         android:layout_alignLeft="@+id/et_password"
         android:layout_alignStart="@+id/et_password"/>
@@ -48,6 +49,7 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/et_password"
+        android:text="1234"
         android:layout_alignBaseline="@+id/tv_passwrod"
         android:layout_alignBottom="@+id/tv_passwrod"
         android:layout_alignParentRight="true"

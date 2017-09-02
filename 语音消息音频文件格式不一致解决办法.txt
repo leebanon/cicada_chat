@@ -2,3 +2,10 @@
 1. 按照融云工作人员的说法，如果现有的消息类型不能满足诉求，可以用融云实现自定义消息类型 http://www.rongcloud.cn/docs/android.html#message_customize
 2. 自己去实现录音功能，将自己的录音文件设置成wav格式，然后直接用来语音识别，会不会有录音功能不能同时给两个功能提供录音的情况，如果有，这条道路就行不通；
 3. 利用jave等jar包实现arm到wav格式的转换，然后语音识别转换后的wav文件，这种效率可能较低；
+4. 融云中也集成了讯飞云的语音输入功能，查看其实现机制（C:\Users\Administrator\Documents\test\sealtalk-android\Recognizer\src\main\java\io\rong\recognizer\RecognizerView.java）
+
+
+总结：
+1. 自己去实现录音功能的方法貌似走不通，因为手机的录音服务audio_service已经被占用，录音时一直显示录音失败（分支a）
+2. Android有两个录音服务，MediaRecorder和AudioRecorder（http://blog.csdn.net/wu_liao_de_ren_sheng/article/details/51585702），融云是通过MediaRecorder实现录音功能（E:\AndroidProject\Cicada_chat\IMKit\src\main\libs\Rong_IMKit.jar!\io\rong\imkit\manager\AudioRecordManager.class，C:\Users\Administrator\AppData\Local\Android\sdk\sources\android-23\android\media\MediaRecorder.java）
+3. 融云在sealtalk-android中集成的语音输入功能，是添加了一个按钮，点击按钮（OnClick）开始讲话并且开始语音识别，没有实现长按机制（OnTouch），与想要的语音识别效果不同。

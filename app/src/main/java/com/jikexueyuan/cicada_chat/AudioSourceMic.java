@@ -29,7 +29,7 @@ public class AudioSourceMic {
     private static final String LOG_TAG = "startAudioRecord";
 
     private boolean isRecordToWav = true;
-    String mRecordfile = "/mnt/sdcard/out.wav";
+    String mRecordfile = "/mnt/sdcard/lyp/out.wav";
     private static RandomAccessFile randomAccessWriter = null;
     private static int payloadSize = 0;
 
@@ -146,7 +146,7 @@ public class AudioSourceMic {
                 Time t = new Time();
                 t.setToNow();
 
-                mRecordfile = "/mnt/sdcard/out_"+t.hour+"_"+t.minute+"_"+t.second+".wav";
+                mRecordfile = "/mnt/sdcard/lyp/out_"+t.hour+"_"+t.minute+"_"+t.second+".wav";
                 File f = new File(mRecordfile);
                 if(f.exists()){
                     f.delete();
@@ -188,6 +188,7 @@ public class AudioSourceMic {
 
         }
 
+        @Override
         public void run()
         {
             Log.i(LOG_TAG, "taskThread start...");
