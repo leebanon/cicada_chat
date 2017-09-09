@@ -227,7 +227,7 @@ public class ConversationActivity extends FragmentActivity {
                     if (ret != ErrorCode.SUCCESS) {
                         Toast.makeText(ConversationActivity.this, "识别失败,错误码：" + ret, Toast.LENGTH_SHORT).show();
                     } else {
-                        byte[] audioData = FucUtil.readAudioFile(ConversationActivity.this,"FinalAudio.wav");
+                        byte[] audioData = FucUtil.readAudioFile(ConversationActivity.this,cm_Uri);
 
                         if (null != audioData) {
                             Toast.makeText(ConversationActivity.this, getString(R.string.text_begin_recognizer),Toast.LENGTH_SHORT);
@@ -286,7 +286,7 @@ public class ConversationActivity extends FragmentActivity {
                             } else if (event.getY() - mLastTouchY > -mOffsetLimit && mUpDirection) {
                                 mUpDirection = false;
                             }
-                        } else{
+                        } else {
                             if (event.getAction() == 1 || event.getAction() == 3) {
                                 closeSpeaker();
                                 if (mAudioSourceMic != null) {
@@ -306,7 +306,6 @@ public class ConversationActivity extends FragmentActivity {
 
                 return false;
             }
-
         });
     }
 

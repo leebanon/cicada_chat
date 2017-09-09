@@ -111,7 +111,7 @@ public class CustomizeMessageItemProvider extends IContainerItemProvider.Message
     }
 
     private void setLayout(Context context, CustomizeMessageItemProvider.ViewHolder holder, UIMessage message, boolean playing) {
-        VoiceMessage content = (VoiceMessage)message.getContent();
+        CustomizeMessage content = (CustomizeMessage)message.getContent();
         byte minLength = 57;
         int duration = AudioRecordManager.getInstance().getMaxVoiceDuration();
         holder.img.getLayoutParams().width = (int)((float)(content.getDuration() * (180 / duration) + minLength) * context.getResources().getDisplayMetrics().density);

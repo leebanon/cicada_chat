@@ -207,9 +207,9 @@ public class MyConversationFragment extends ConversationFragment implements AbsL
 
             if (mConversationType.equals(Conversation.ConversationType.PRIVATE)) {
                 RongIMClient.getInstance().sendTypingStatus(mConversationType, mTargetId, "RC:VcMsg");
-//                Log.e("显示聊天类型", "ConversationType is "+ mConversationType + ", TargetId is " + mTargetId);
+
             }
-    }
+        }
 
     }
 

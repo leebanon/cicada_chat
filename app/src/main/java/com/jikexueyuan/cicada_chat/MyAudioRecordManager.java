@@ -229,7 +229,7 @@ public class MyAudioRecordManager implements Callback {
             this.muteAudioFocus(this.mAudioManager, true);
             this.mAudioManager.setMode(0);
             AudioName = AudioFileFunc.getRawFilePath();
-            NewAudioName = AudioFileFunc.getWavFilePath();
+//            NewAudioName = AudioFileFunc.getWavFilePath();
 
             minBufferSize = AudioRecord.getMinBufferSize(mSampleRate, mChannelConfig, mAudioEncodingBitRate);
             if(minBufferSize == AudioRecord.ERROR_BAD_VALUE){
@@ -552,7 +552,7 @@ public class MyAudioRecordManager implements Callback {
         @Override
         public void run() {
             writeDateTOFile();//往文件中写入裸数据
-            copyWaveFile(AudioName, NewAudioName);//给裸数据加上头文件
+            copyWaveFile(AudioName, mAudioPath.getPath());//给裸数据加上头文件
         }
     }
 
@@ -600,7 +600,7 @@ public class MyAudioRecordManager implements Callback {
         long totalAudioLen = 0;
         long totalDataLen = totalAudioLen + 36;
         long longSampleRate = AudioFileFunc.AUDIO_SAMPLE_RATE;
-        int channels = 2;
+        int channels = 1;
         long byteRate = 16 * AudioFileFunc.AUDIO_SAMPLE_RATE * channels / 8;
         byte[] data = new byte[minBufferSize*4];
         try {
