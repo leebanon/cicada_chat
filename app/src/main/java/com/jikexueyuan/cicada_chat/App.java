@@ -23,6 +23,6 @@ public class App extends Application {
         SpeechUtility.createUtility(App.this, SpeechConstant.APPID+"=575816bd");
         RongIM.init(this);
         RongIM.registerMessageType(CustomizeMessage.class);
-        RongIM.getInstance().registerMessageTemplate(new CustomizeMessageItemProvider());
+        RongIM.getInstance().registerMessageTemplate(new CustomizeMessageItemProvider(getApplicationContext()));
     }
 }

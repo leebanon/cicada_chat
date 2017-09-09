@@ -185,33 +185,22 @@ public class MyConversationFragment extends ConversationFragment implements AbsL
                 mTargetId = mRongExtension.getTargetId();
                 MyAudioRecordManager.getInstance().startRecord(v.getRootView(), mConversationType, mTargetId);
                 Log.e("啪啪啪","看看显示几条信息");
-//                mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-//                mAudioSourceMic = new AudioSourceMic();
-//                mAudioSourceMic.Create(16000);
-//                if (mAudioSourceMic != null)
-//                {
-//                    mAudioSourceMic.Start();
-//                }
-//                openSpeaker();
+
                 mLastTouchY = event.getY();
                 mUpDirection = false;
-                ((Button) v).setText("按住状态");
+                ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input_hover);
             } else if (event.getAction() == 2) {
                 if (mLastTouchY - event.getY() > mOffsetLimit && !mUpDirection) {
                     MyAudioRecordManager.getInstance().willCancelRecord();
                     mUpDirection = true;
-                    ((Button) v).setText("什么状态");
+                    ((Button) v).setText(R.string.rc_audio_input_cancel);
                 } else if (event.getY() - mLastTouchY > - mOffsetLimit && mUpDirection) {
                     MyAudioRecordManager.getInstance().continueRecord();
                     mUpDirection = false;
                     ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input_hover);}
             } else if (event.getAction() == 1 || event.getAction() == 3) {
                 MyAudioRecordManager.getInstance().stopRecord();
-//                closeSpeaker();
-//                if (mAudioSourceMic != null) {
-//                    mAudioSourceMic.Close();
-//                    mAudioSourceMic = null;
-//                }
+
                 ((Button) v).setText(io.rong.imkit.R.string.rc_audio_input);
                 Log.e("显示聊天类型", "ConversationType is "+ mConversationType + ", TargetId is " + mTargetId);
             }
@@ -239,13 +228,5 @@ public class MyConversationFragment extends ConversationFragment implements AbsL
         super.initFragment(uri);
     }
 
-    private void openSpeaker() {
-        mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        mAudioManager.setSpeakerphoneOn(true);
-    }
-
-    private void closeSpeaker() {
-        mAudioManager.setSpeakerphoneOn(false);
-    }
 }
 

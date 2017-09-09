@@ -3,11 +3,13 @@ mkdir filename
 cd filename
 然后初始化库：
 git init
-然后开始上传：
+添加远程库：
+git remote add origin https://github.com/me/repo.git  //这里的me指的是github的账户名，repo指的是github上的仓库名
+
+以后上传时按照以下步骤进行：
 1. git add . // add all documents to暂存库
-2. git remote add origin https://github.com/me/repo.git  //这里的me指的是github的账户名，repo指的是github上的仓库名
-3. git commit -m "first commit"
-4. git push origin master, push之前先pull一下
+2. git commit -m "first commit"
+3. git push origin master, push之前先pull一下
 
 
 

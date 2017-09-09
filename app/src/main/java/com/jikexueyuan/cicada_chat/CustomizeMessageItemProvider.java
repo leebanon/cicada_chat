@@ -94,7 +94,7 @@ public class CustomizeMessageItemProvider extends IContainerItemProvider.Message
     public void onItemClick(View view, int position, CustomizeMessage content, UIMessage message) {
         RLog.d("VoiceMessageItemProvider", "Item index:" + position);
         CustomizeMessageItemProvider.ViewHolder holder = (CustomizeMessageItemProvider.ViewHolder)view.getTag();
-        holder.unread.setVisibility(8);
+        holder.unread.setVisibility(View.GONE);
         Uri playingUri = MyAudioPlayManager.getInstance().getPlayingUri();
         if(playingUri != null && playingUri.equals(content.getUri())) {
             MyAudioPlayManager.getInstance().stopPlay();
@@ -110,7 +110,7 @@ public class CustomizeMessageItemProvider extends IContainerItemProvider.Message
 
     }
 
-    private void setLayout(Context context, VoiceMessageItemProvider.ViewHolder holder, UIMessage message, boolean playing) {
+    private void setLayout(Context context, CustomizeMessageItemProvider.ViewHolder holder, UIMessage message, boolean playing) {
         VoiceMessage content = (VoiceMessage)message.getContent();
         byte minLength = 57;
         int duration = AudioRecordManager.getInstance().getMaxVoiceDuration();
@@ -118,9 +118,9 @@ public class CustomizeMessageItemProvider extends IContainerItemProvider.Message
         AnimationDrawable animationDrawable;
         if(message.getMessageDirection() == Message.MessageDirection.SEND) {
             holder.left.setText(String.format("%s\"", new Object[]{Integer.valueOf(content.getDuration())}));
-            holder.left.setVisibility(0);
-            holder.right.setVisibility(8);
-            holder.unread.setVisibility(8);
+            holder.left.setVisibility(View.VISIBLE);
+            holder.right.setVisibility(View.GONE);
+            holder.unread.setVisibility(View.GONE);
             holder.img.setScaleType(ImageView.ScaleType.FIT_END);
             holder.img.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_right);
             animationDrawable = (AnimationDrawable)context.getResources().getDrawable(io.rong.imkit.R.drawable.rc_an_voice_sent);
@@ -137,12 +137,12 @@ public class CustomizeMessageItemProvider extends IContainerItemProvider.Message
             }
         } else {
             holder.right.setText(String.format("%s\"", new Object[]{Integer.valueOf(content.getDuration())}));
-            holder.right.setVisibility(0);
-            holder.left.setVisibility(8);
+            holder.right.setVisibility(View.VISIBLE);
+            holder.left.setVisibility(View.GONE);
             if(!message.getReceivedStatus().isListened()) {
-                holder.unread.setVisibility(0);
+                holder.unread.setVisibility(View.VISIBLE);
             } else {
-                holder.unread.setVisibility(8);
+                holder.unread.setVisibility(View.GONE);
             }
 
             holder.img.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_left);
