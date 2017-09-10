@@ -11,6 +11,14 @@ git remote add origin https://github.com/me/repo.git  //这里的me指的是gith
 2. git commit -m "first commit"
 3. git push origin master, push之前先pull一下
 
+创建分支a：
+git branch a
+跳转到分支a：
+git checkout a
+这两个步骤可以合并成为：
+git checkout -b a
+即先创建分支a，然后跳转到分支a上
+
 
 
 有一次出现  git everything up-to-date

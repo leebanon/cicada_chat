@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import io.rong.common.FileUtils;
 import io.rong.imkit.IExtensionClickListener;
 import io.rong.imkit.RongExtension;
 import io.rong.imkit.RongIM;
@@ -120,14 +121,14 @@ public class ConversationActivity extends FragmentActivity {
                     String sendMessage = textMessage.getContent();
                     Log.e(TAG, "sendMessage " + sendMessage);
                 }
-                if(messageContent instanceof VoiceMessage){
+                if(messageContent instanceof CustomizeMessage){
                     et_message.setText(null);
-                    VoiceMessage voiceMessage = (VoiceMessage) messageContent;
-                    int sendMessageDuration = voiceMessage.getDuration();
-                    Log.e(TAG, "voiceMessageDuration " + sendMessageDuration);
-                    String vm_Uri = voiceMessage.getUri().toString();
-                    Log.d(TAG, "onSend-voiceMessage:" + vm_Uri);
-                    et_message.setText("voiceMessage uri is "+ vm_Uri);
+                    CustomizeMessage customizeMessage = (CustomizeMessage) messageContent;
+                    int sendMessageDuration = customizeMessage.getDuration();
+                    Log.e(TAG, "CustomizeMessageDuration " + sendMessageDuration);
+                    String cm_Uri = customizeMessage.getUri().toString();
+                    Log.d(TAG, "onSend-voiceMessage:" + cm_Uri);
+                    et_message.setText("CustomizeMessage uri is "+ cm_Uri);
 
                 }
                 return message;
@@ -167,41 +168,6 @@ public class ConversationActivity extends FragmentActivity {
                 } else if (messageContent instanceof VoiceMessage) {//语音消息
                     VoiceMessage voiceMessage = (VoiceMessage) messageContent;
                     Log.d(TAG, "onSent-VoiceMessage:" + voiceMessage.getUri().toString());
-                    et_message_path.setText(null);
-                    mIatResults.clear();
-
-                    String cm_Uri = voiceMessage.getUri().toString();
-                    Log.d(TAG, "onSent-CustomizeMessage:" + cm_Uri);
-                    et_message_path.setText("voiceMessage uri is "+ cm_Uri);
-                    mTargetId = message.getTargetId();
-                    mConversationType = message.getConversationType();
-                    Log.e(TAG, "mTagetID is "+ mTargetId);
-                    Log.e(TAG, "mConversationType is " + mConversationType);
-
-                    // 设置参数
-                    setParam();
-                    // 设置音频来源为外部文件
-                    mIat.setParameter(SpeechConstant.AUDIO_SOURCE, "-1");
-                    ret = mIat.startListening(mRecognizerListener);
-
-                    if (ret != ErrorCode.SUCCESS) {
-                        Toast.makeText(ConversationActivity.this, "识别失败,错误码：" + ret, Toast.LENGTH_SHORT).show();
-                    } else {
-                        byte[] audioData = FucUtil.readAudioFile(ConversationActivity.this,"FinalAudio.wav");
-
-                        if (null != audioData) {
-                            Toast.makeText(ConversationActivity.this, getString(R.string.text_begin_recognizer),Toast.LENGTH_SHORT);
-                            // 一次（也可以分多次）写入音频文件数据，数据格式必须是采样率为8KHz或16KHz（本地识别只支持16K采样率，云端都支持），位长16bit，单声道的wav或者pcm
-                            // 写入8KHz采样的音频时，必须先调用setParameter(SpeechConstant.SAMPLE_RATE, "8000")设置正确的采样率
-                            // 注：当音频过长，静音部分时长超过VAD_EOS将导致静音后面部分不能识别。
-                            // 音频切分方法：FucUtil.splitBuffer(byte[] buffer,int length,int spsize);
-                            mIat.writeAudio(audioData, 0, audioData.length);
-                            mIat.stopListening();
-                        } else {
-                            mIat.cancel();
-                            Toast.makeText(ConversationActivity.this, "读取音频流失败",Toast.LENGTH_SHORT).show();
-                        }
-                    }
                 } else if (messageContent instanceof RichContentMessage) {//图文消息
                     RichContentMessage richContentMessage = (RichContentMessage) messageContent;
                     Log.d(TAG, "onSent-RichContentMessage:" + richContentMessage.getContent());
@@ -212,7 +178,7 @@ public class ConversationActivity extends FragmentActivity {
                     CustomizeMessage customizeMessage = (CustomizeMessage) messageContent;
                     String cm_Uri = customizeMessage.getUri().toString();
                     Log.d(TAG, "onSent-CustomizeMessage:" + cm_Uri);
-                    et_message_path.setText("voiceMessage uri is "+ cm_Uri);
+                    et_message_path.setText("CustomizeMessage uri is "+ cm_Uri);
                     mTargetId = message.getTargetId();
                     mConversationType = message.getConversationType();
                     Log.e(TAG, "mTagetID is "+ mTargetId);
@@ -227,7 +193,7 @@ public class ConversationActivity extends FragmentActivity {
                     if (ret != ErrorCode.SUCCESS) {
                         Toast.makeText(ConversationActivity.this, "识别失败,错误码：" + ret, Toast.LENGTH_SHORT).show();
                     } else {
-                        byte[] audioData = FucUtil.readAudioFile(ConversationActivity.this,cm_Uri);
+                        byte[] audioData = FileUtils.getByteFromUri(customizeMessage.getUri());
 
                         if (null != audioData) {
                             Toast.makeText(ConversationActivity.this, getString(R.string.text_begin_recognizer),Toast.LENGTH_SHORT);

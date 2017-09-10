@@ -23,7 +23,7 @@ import io.rong.message.VoiceMessage;
  * Created by Administrator on 2017/7/27.
  */
 
-@MessageTag(value = "app:custom", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
+@MessageTag(value = "app:custom", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED,messageHandler = CustomizeMessageHandler.class)
 public class CustomizeMessage extends MessageContent{
 //    private String content;
     private Uri mUri;

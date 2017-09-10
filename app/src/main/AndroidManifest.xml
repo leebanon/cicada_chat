@@ -44,6 +44,7 @@
         </activity>
         <activity
             android:name=".ConversationActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

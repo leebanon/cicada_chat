@@ -9,6 +9,8 @@ import com.iflytek.cloud.SpeechUtility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -128,7 +130,9 @@ public class FucUtil {
 	 */
 	public static byte[] readAudioFile(Context context, String filename) {
 		try {
-			InputStream ins = context.getAssets().open(filename);
+//			InputStream ins = context.getAssets().open(filename);
+//			InputStream ins = context.openFileInput(filename);
+			FileInputStream ins = new FileInputStream(new File(filename));
 			byte[] data = new byte[ins.available()];
 			
 			ins.read(data);
