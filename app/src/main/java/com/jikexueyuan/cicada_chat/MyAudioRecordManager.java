@@ -13,6 +13,7 @@ import android.media.MediaFormat;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
@@ -32,6 +33,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
 import io.rong.common.RLog;
@@ -83,9 +89,13 @@ public class MyAudioRecordManager implements Callback {
     private String AudioName = "";
     //NewAudioName可播放的音频文件
     private String NewAudioName = "";
+    //AmrAudioName转化成Amr的音频文件
+    private String AmrAudioName = "";
+
     private boolean isRecord = false;// 设置正在录制的状态
 
     private MediaCodec encoder;
+    private Thread recorderThread;
 
     public static MyAudioRecordManager getInstance() {
         return MyAudioRecordManager.SingletonHolder.sInstance;
@@ -236,6 +246,7 @@ public class MyAudioRecordManager implements Callback {
             this.muteAudioFocus(this.mAudioManager, true);
             this.mAudioManager.setMode(0);
             AudioName = AudioFileFunc.getRawFilePath();
+            AmrAudioName = AudioFileFunc.getAmrFilePath();
 //            NewAudioName = AudioFileFunc.getWavFilePath();
 
             minBufferSize = AudioRecord.getMinBufferSize(mSampleRate, mChannelConfig, mAudioEncodingBitRate);
@@ -251,8 +262,10 @@ public class MyAudioRecordManager implements Callback {
             isRecord = true;
             this.mAudioRecord.startRecording();
 
-            new Thread(new AudioRecordThread()).start();
+//            recorderThread = new Thread(recorderTask);
+//            recorderThread.start();
 
+            new Thread(new AudioRecordThread()).start();
 
             this.mAudioPath = Uri.fromFile(new File(this.mContext.getCacheDir(), System.currentTimeMillis() + "temp.wav"));
 
@@ -572,18 +585,84 @@ public class MyAudioRecordManager implements Callback {
         // new一个byte数组用来存一些字节数据，大小为缓冲区大小
         byte[] audiodata = new byte[minBufferSize*4];
         FileOutputStream fos = null;
+        FileOutputStream amrfos = null;
+
+        ByteBuffer[] inputBuffers;
+        ByteBuffer[] outputBuffers;
+
+        ByteBuffer inputBuffer;
+        ByteBuffer outputBuffer;
+
+        MediaCodec.BufferInfo bufferInfo;
+        int inputBufferIndex;
+        int outputBufferIndex;
+
+        byte[] outData;
+
+        if (!initEncoder()) {
+            return;
+        }
+
+        encoder.start();
+
         int readsize = 0;
         try {
             File file = new File(AudioName);
+            File amrfile = new File(AmrAudioName);
             if (file.exists()) {
                 file.delete();
             }
+            if(amrfile.exists()){
+                amrfile.delete();
+            }
             fos = new FileOutputStream(file);// 建立一个可存取字节的文件
+            amrfos = new FileOutputStream(amrfile);// amrfos是amrfile文件的可存取字节
         } catch (Exception e) {
             e.printStackTrace();
         }
-        while (isRecord == true) {
+        while (!Thread.interrupted() && isRecord == true) {
             readsize = mAudioRecord.read(audiodata, 0, minBufferSize*4);
+            inputBuffers = encoder.getInputBuffers();
+            outputBuffers = encoder.getOutputBuffers();
+            inputBufferIndex = encoder.dequeueInputBuffer(-1);
+
+            if (inputBufferIndex >= 0) {
+                inputBuffer = inputBuffers[inputBufferIndex];
+                inputBuffer.clear();
+
+                inputBuffer.put(audiodata);
+
+                encoder.queueInputBuffer(inputBufferIndex, 0, audiodata.length, 0, 0);
+            }
+
+            bufferInfo = new MediaCodec.BufferInfo();
+            outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 0);
+
+            while (outputBufferIndex >= 0) {
+                    outputBuffer = outputBuffers[outputBufferIndex];
+
+                    outputBuffer.position(bufferInfo.offset);
+                    outputBuffer.limit(bufferInfo.offset + bufferInfo.size);
+
+                    outData = new byte[bufferInfo.size];
+                    outputBuffer.get(outData);
+
+                    Log.d("AudioEncoder", outData.length + " bytes encoded");
+
+//                    Message msg = handler.obtainMessage(0);
+
+                    encoder.releaseOutputBuffer(outputBufferIndex, false);
+                    outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 0);
+                    if (AudioRecord.ERROR_INVALID_OPERATION != readsize && amrfos!=null) {
+                        try {
+                            amrfos.write(outData);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+            }
+
+
             if (AudioRecord.ERROR_INVALID_OPERATION != readsize && fos!=null) {
                 try {
                     fos.write(audiodata);
@@ -591,14 +670,106 @@ public class MyAudioRecordManager implements Callback {
                     e.printStackTrace();
                 }
             }
+
         }
         try {
             if(fos != null)
                 fos.close();// 关闭写入流
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (encoder != null) {
+                encoder.stop();
+                encoder.release();
+                encoder = null;
+            }
         }
     }
+
+//    private Runnable recorderTask = new Runnable() {
+//        @Override
+//        public void run() {
+//
+//            int read;  // ==readsize
+//            byte[] buffer1 = new byte[minBufferSize];  // == audiodata
+//
+//            ByteBuffer[] inputBuffers;
+//            ByteBuffer[] outputBuffers;
+//
+//            ByteBuffer inputBuffer;
+//            ByteBuffer outputBuffer;
+//
+//            MediaCodec.BufferInfo bufferInfo;
+//            int inputBufferIndex;
+//            int outputBufferIndex;
+//
+//            byte[] outData;
+//
+//            if (!initEncoder()) {
+//                return;
+//            }
+//
+//            encoder.start();
+//
+//            isRecording = true;  // == isRecord
+//
+//            try {
+//
+//                while (!Thread.interrupted() && isRecording) {
+//
+//                    read = recorder.read(buffer1, 0, minBufferSize);
+//
+//                    inputBuffers = encoder.getInputBuffers();
+//                    outputBuffers = encoder.getOutputBuffers();
+//                    inputBufferIndex = encoder.dequeueInputBuffer(-1);
+//
+//                    if (inputBufferIndex >= 0) {
+//                        inputBuffer = inputBuffers[inputBufferIndex];
+//                        inputBuffer.clear();
+//
+//                        inputBuffer.put(buffer1);
+//
+//                        encoder.queueInputBuffer(inputBufferIndex, 0, buffer1.length, 0, 0);
+//                    }
+//
+//                    bufferInfo = new MediaCodec.BufferInfo();
+//                    outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 0);
+//
+//                    while (outputBufferIndex >= 0) {
+//                        try {
+//                            outputBuffer = outputBuffers[outputBufferIndex];
+//
+//                            outputBuffer.position(bufferInfo.offset);
+//                            outputBuffer.limit(bufferInfo.offset + bufferInfo.size);
+//
+//                            outData = new byte[bufferInfo.size];
+//                            outputBuffer.get(outData);
+//
+//                            Log.d("AudioEncoder", outData.length + " bytes encoded");
+//
+//                            Message msg = handler.obtainMessage(0);
+//
+//                            encoder.releaseOutputBuffer(outputBufferIndex, false);
+//                            outputBufferIndex = encoder.dequeueOutputBuffer(bufferInfo, 0);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    // ----------------------;
+//                }
+//            } catch (SocketException e) {
+//                e.printStackTrace();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (encoder != null) {
+//                    encoder.stop();
+//                    encoder.release();
+//                    encoder = null;
+//                }
+//            }
+//        }
+//    };
 
     // 这里得到可播放的音频文件
     private void copyWaveFile(String inFilename, String outFilename) {
@@ -708,7 +879,5 @@ public class MyAudioRecordManager implements Callback {
 
         return false;
     }
-
-
 
 }

@@ -46,6 +46,16 @@ public class AudioFileFunc {
         
          return mAudioRawPath;
      }
+
+    public static String getAmrFilePath(){
+        String mAudioAmrPath = "";
+        if(isSdcardExit()){
+            String fileBasePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            mAudioAmrPath = fileBasePath+"/"+AUDIO_AMR_FILENAME;
+        }
+
+        return mAudioAmrPath;
+    }
     
       /**
       * 获取编码后的WAV格式音频文件路径
