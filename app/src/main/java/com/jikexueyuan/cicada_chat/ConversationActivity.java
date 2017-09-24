@@ -219,60 +219,60 @@ public class ConversationActivity extends FragmentActivity {
 
         });
 
-        ImageView iv = (ImageView) findViewById(R.id.music);
-
-        iv.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                String[] permissions = new String[]{"android.permission.RECORD_AUDIO"};
-                if (!PermissionCheckUtil.checkPermissions(ConversationActivity.this, permissions)) {
-                    if (event.getAction() == 0) {
-                        PermissionCheckUtil.requestPermissions(ConversationActivity.this, permissions, 100);
-                    }
-
-                } else {
-                    if (event.getAction() == 0) {
-                        AudioPlayManager.getInstance().stopPlay();
-
-                        mAudioManager = (AudioManager) ConversationActivity.this.getSystemService(Context.AUDIO_SERVICE);
-                        mAudioSourceMic = new AudioSourceMic();
-                        mAudioSourceMic.Create(16000);
-                        if (mAudioSourceMic != null) {
-                            mAudioSourceMic.Start();
-                        }
-                        openSpeaker();
-                        mLastTouchY = event.getY();
-                        mUpDirection = false;
-                        return false;
-
-                    } else {
-                        if (event.getAction() == 2) {
-                            if (mLastTouchY - event.getY() > mOffsetLimit && !mUpDirection) {
-                                mUpDirection = true;
-                            } else if (event.getY() - mLastTouchY > -mOffsetLimit && mUpDirection) {
-                                mUpDirection = false;
-                            }
-                        } else {
-                            if (event.getAction() == 1 || event.getAction() == 3) {
-                                closeSpeaker();
-                                if (mAudioSourceMic != null) {
-                                    mAudioSourceMic.Close();
-                                    mAudioSourceMic = null;
-                                }
-                                Log.e("显示聊天类型", "ConversationType is  , TargetId is ");
-                            }
-                        }
-                    }
-                }
-
-//                if (mConversationType.equals(Conversation.ConversationType.PRIVATE)) {
-//                    RongIMClient.getInstance().sendTypingStatus(mConversationType, mTargetId, "RC:VcMsg");
-////                Log.e("显示聊天类型", "ConversationType is "+ mConversationType + ", TargetId is " + mTargetId);
+//        ImageView iv = (ImageView) findViewById(R.id.music);
+//
+//        iv.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                String[] permissions = new String[]{"android.permission.RECORD_AUDIO"};
+//                if (!PermissionCheckUtil.checkPermissions(ConversationActivity.this, permissions)) {
+//                    if (event.getAction() == 0) {
+//                        PermissionCheckUtil.requestPermissions(ConversationActivity.this, permissions, 100);
+//                    }
+//
+//                } else {
+//                    if (event.getAction() == 0) {
+//                        AudioPlayManager.getInstance().stopPlay();
+//
+//                        mAudioManager = (AudioManager) ConversationActivity.this.getSystemService(Context.AUDIO_SERVICE);
+//                        mAudioSourceMic = new AudioSourceMic();
+//                        mAudioSourceMic.Create(16000);
+//                        if (mAudioSourceMic != null) {
+//                            mAudioSourceMic.Start();
+//                        }
+//                        openSpeaker();
+//                        mLastTouchY = event.getY();
+//                        mUpDirection = false;
+//                        return false;
+//
+//                    } else {
+//                        if (event.getAction() == 2) {
+//                            if (mLastTouchY - event.getY() > mOffsetLimit && !mUpDirection) {
+//                                mUpDirection = true;
+//                            } else if (event.getY() - mLastTouchY > -mOffsetLimit && mUpDirection) {
+//                                mUpDirection = false;
+//                            }
+//                        } else {
+//                            if (event.getAction() == 1 || event.getAction() == 3) {
+//                                closeSpeaker();
+//                                if (mAudioSourceMic != null) {
+//                                    mAudioSourceMic.Close();
+//                                    mAudioSourceMic = null;
+//                                }
+//                                Log.e("显示聊天类型", "ConversationType is  , TargetId is ");
+//                            }
+//                        }
+//                    }
 //                }
-
-                return false;
-            }
-        });
+//
+////                if (mConversationType.equals(Conversation.ConversationType.PRIVATE)) {
+////                    RongIMClient.getInstance().sendTypingStatus(mConversationType, mTargetId, "RC:VcMsg");
+//////                Log.e("显示聊天类型", "ConversationType is "+ mConversationType + ", TargetId is " + mTargetId);
+////                }
+//
+//                return false;
+//            }
+//        });
     }
 
     /**
@@ -444,14 +444,14 @@ public class ConversationActivity extends FragmentActivity {
 
 
 
-    private void openSpeaker() {
-        mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        mAudioManager.setSpeakerphoneOn(true);
-    }
-
-    private void closeSpeaker() {
-        mAudioManager.setSpeakerphoneOn(false);
-    }
+//    private void openSpeaker() {
+//        mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+//        mAudioManager.setSpeakerphoneOn(true);
+//    }
+//
+//    private void closeSpeaker() {
+//        mAudioManager.setSpeakerphoneOn(false);
+//    }
 
     @Override
     protected void onDestroy() {

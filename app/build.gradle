@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    externalNativeBuild {
+        ndkBuild {
+        }
+    }
 }
 
 sourceSets {
@@ -36,6 +40,7 @@ dependencies {
     compile project(':IMKit')
     compile files('libs/Msc.jar')
     compile files('libs/Sunflower.jar')
+
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'cz.msebera.android:httpclient:4.3.6'
     compile 'com.google.android.gms:play-services-appindexing:9.8.0'

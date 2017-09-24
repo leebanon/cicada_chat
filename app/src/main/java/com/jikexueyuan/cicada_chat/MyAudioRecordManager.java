@@ -7,6 +7,9 @@ import android.content.res.Resources;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
+import android.media.MediaCodec;
+import android.media.MediaCodecInfo;
+import android.media.MediaFormat;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
@@ -29,6 +32,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 import io.rong.common.RLog;
 import io.rong.imkit.RongContext;
@@ -60,6 +64,7 @@ public class MyAudioRecordManager implements Callback {
     private int mSampleRate = 16000;
     private int mChannelConfig =  AudioFormat.CHANNEL_IN_MONO;
     private int mAudioEncodingBitRate = AudioFormat.ENCODING_PCM_16BIT;
+    private int BIT_RATE = 15850;
     private int minBufferSize;
     private Uri mAudioPath;
     private boolean mIsRecStarted;
@@ -79,6 +84,8 @@ public class MyAudioRecordManager implements Callback {
     //NewAudioName可播放的音频文件
     private String NewAudioName = "";
     private boolean isRecord = false;// 设置正在录制的状态
+
+    private MediaCodec encoder;
 
     public static MyAudioRecordManager getInstance() {
         return MyAudioRecordManager.SingletonHolder.sInstance;
@@ -237,7 +244,7 @@ public class MyAudioRecordManager implements Callback {
             }
             Log.i(TAG,"minBufferSize: " + minBufferSize);
 
-            this.mAudioRecord = new AudioRecord(mAudioSource,mSampleRate,mChannelConfig,mAudioEncodingBitRate,minBufferSize*4);
+            mAudioRecord = new AudioRecord(mAudioSource,mSampleRate,mChannelConfig,mAudioEncodingBitRate,minBufferSize*4);
 
 //            RLog.d("MyAudioRecordManager","mAudioRecord is "+(boolean)(mAudioRecord == null));
             // 让录制状态为true
@@ -248,7 +255,7 @@ public class MyAudioRecordManager implements Callback {
 
 
             this.mAudioPath = Uri.fromFile(new File(this.mContext.getCacheDir(), System.currentTimeMillis() + "temp.wav"));
-            //this.mAudioRecord.setOutputFile(this.mAudioPath.getPath());
+
             Message e1 = Message.obtain();
             e1.what = 7;
             e1.obj = Integer.valueOf(10);
@@ -624,9 +631,7 @@ public class MyAudioRecordManager implements Callback {
 
     /**
      * 这里提供一个头信息。插入这些信息就可以得到可以播放的文件。
-     * 为我为啥插入这44个字节，这个还真没深入研究，不过你随便打开一个wav
-     * 音频的文件，可以发现前面的头文件可以说基本一样哦。每种格式的文件都有
-     * 自己特有的头文件。
+     * 每种格式的文件都有自己特有的头文件。
      */
     private void WriteWaveFileHeader(FileOutputStream out, long totalAudioLen,
                                      long totalDataLen, long longSampleRate, int channels, long byteRate)
@@ -685,4 +690,25 @@ public class MyAudioRecordManager implements Callback {
         SingletonHolder() {
         }
     }
+
+    private boolean initEncoder() {
+        try {
+            encoder = MediaCodec.createEncoderByType("audio/3gpp");
+            MediaFormat format = new MediaFormat();
+            format.setString(MediaFormat.KEY_MIME, "audio/3gpp");
+            format.setInteger(MediaFormat.KEY_CHANNEL_COUNT, mChannelConfig);
+            format.setInteger(MediaFormat.KEY_SAMPLE_RATE, mSampleRate);
+            format.setInteger(MediaFormat.KEY_BIT_RATE, BIT_RATE);
+            encoder.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
+            return true;
+        } catch (IOException e) {
+            Log.e(TAG, "init encoder failed.");
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+
 }
